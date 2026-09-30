@@ -170,8 +170,8 @@ Smriti/
 
 ---
 
-## 8. Final Presentation
 
+<<<<<<< HEAD
 📊 The project presentation (PPT) is available on Google Drive (access: **Anyone with the link — Viewer**).
 
 > **[📥 View Presentation on Google Drive](https://docs.google.com/file/d/1ZMWVouCgjB8nl_J1NueILKSQ3ZTZmB5A/view)**
@@ -185,6 +185,8 @@ Smriti/
 > **[▶️ Watch Demo Video on YouTube](https://youtu.be/TTV7cAvSF-s)**
 
 ---
+=======
+>>>>>>> b35e8497639af9c34683977c4710bb52ad130f55
 
 ## 10. Screenshots / Prototype Photos
 
