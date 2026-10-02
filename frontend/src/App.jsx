@@ -2,74 +2,59 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Navbar from './components/Navbar';
-import CaregiverLogin from './pages/caregiver/CaregiverLogin';
-import CaregiverDashboard from './pages/caregiver/CaregiverDashboard';
-import CaregiverPatientDetail from './pages/caregiver/CaregiverPatientDetail';
-import CaregiverCognitiveGames from './pages/caregiver/CaregiverCognitiveGames';
-import CaregiverNotifications from './pages/caregiver/CaregiverNotifications';
-import CaregiverProfile from './pages/caregiver/CaregiverProfile';
-import PatientLogin from './pages/patient/PatientLogin';
-import PatientDashboard from './pages/patient/PatientDashboard';
-import PatientReminders from './pages/patient/PatientReminders';
-import PatientFamily from './pages/patient/PatientFamily';
-import PatientProfile from './pages/patient/PatientProfile';
-import MarketDayBasket from './pages/patient/games/MarketDayBasket';
-import DailyRoutineSequencer from './pages/patient/games/DailyRoutineSequencer';
-import FacesFamilyRecall from './pages/patient/games/FacesFamilyRecall';
-import SoundRhythmMatch from './pages/patient/games/SoundRhythmMatch';
-import OddOneOut from './pages/patient/games/OddOneOut';
-import PatientAllGames from './pages/patient/PatientAllGames';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import PatientChatbot from './components/patient/PatientChatbot';
-import PwaInstallPrompt from './components/PwaInstallPrompt';
 import ErrorBoundary from './components/ErrorBoundary';
+
+// Pages
+import LandingPage from './pages/LandingPage';
+import SeniorDashboard from './pages/patient/SeniorDashboard';
+import SeniorGlucoseLog from './pages/patient/SeniorGlucoseLog';
+import SeniorMedications from './pages/patient/SeniorMedications';
+import SeniorSymptoms from './pages/patient/SeniorSymptoms';
+import SeniorMeals from './pages/patient/SeniorMeals';
+import SeniorActivity from './pages/patient/SeniorActivity';
+import SeniorSummary from './pages/patient/SeniorSummary';
+import SeniorOnboarding from './pages/patient/SeniorOnboarding';
+import CaregiverDashboard from './pages/caregiver/CaregiverDashboard';
+import DoctorReport from './pages/DoctorReport';
+import PrivacyConsent from './pages/PrivacyConsent';
 
 function App() {
   return (
     <AppProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-stone-900 selection:bg-amber-200 selection:text-amber-900">
+        <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-teal-100 selection:text-teal-900">
           <Navbar />
           <main className="flex-1">
             <ErrorBoundary>
               <Routes>
-                {/* Default Entry: Patient Login */}
-                <Route path="/" element={<PatientLogin />} />
+                {/* Landing & Quick Access */}
+                <Route path="/" element={<LandingPage />} />
 
-                {/* Patient Portal */}
-                <Route path="/patient" element={<PatientDashboard />} />
-                <Route path="/patient/profile" element={<PatientProfile />} />
-                <Route path="/patient/reminders" element={<PatientReminders />} />
-                <Route path="/patient/family" element={<PatientFamily />} />
-                <Route path="/patient/games" element={<PatientAllGames />} />
-                <Route path="/patient/games/market-day-basket" element={<MarketDayBasket />} />
-                <Route path="/patient/games/daily-routine-sequencer" element={<DailyRoutineSequencer />} />
-                <Route path="/patient/games/faces-family-recall" element={<FacesFamilyRecall />} />
-                <Route path="/patient/games/sound-rhythm-match" element={<SoundRhythmMatch />} />
-                <Route path="/patient/games/odd-one-out" element={<OddOneOut />} />
-                <Route path="/patient/login" element={<PatientLogin />} />
+                {/* Senior Citizen Experience */}
+                <Route path="/patient" element={<SeniorDashboard />} />
+                <Route path="/patient/glucose" element={<SeniorGlucoseLog />} />
+                <Route path="/patient/medicines" element={<SeniorMedications />} />
+                <Route path="/patient/symptoms" element={<SeniorSymptoms />} />
+                <Route path="/patient/meals" element={<SeniorMeals />} />
+                <Route path="/patient/activity" element={<SeniorActivity />} />
+                <Route path="/patient/summary" element={<SeniorSummary />} />
+                <Route path="/patient/onboarding" element={<SeniorOnboarding />} />
 
-              {/* Caregiver Portal */}
-              <Route path="/caregiver/login" element={<CaregiverLogin />} />
-              <Route path="/caregiver" element={<CaregiverDashboard />} />
-              <Route path="/caregiver/patient/:id" element={<CaregiverPatientDetail />} />
-              <Route path="/caregiver/patient/:id/games" element={<CaregiverCognitiveGames />} />
-              <Route path="/caregiver/notifications" element={<CaregiverNotifications />} />
-              <Route path="/caregiver/profile" element={<CaregiverProfile />} />
+                {/* Caregiver Portal */}
+                <Route path="/caregiver" element={<CaregiverDashboard />} />
 
-              {/* Legal & Compliance */}
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                {/* Doctor Clinical Report */}
+                <Route path="/doctor-report" element={<DoctorReport />} />
 
-              {/* Catch-all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </ErrorBoundary>
-        </main>
-          {/* Floating AI Chatbot for Patient Portal */}
-          <PatientChatbot />
+                {/* Privacy & Consent */}
+                <Route path="/privacy" element={<PrivacyConsent />} />
+                <Route path="/privacy-policy" element={<PrivacyConsent />} />
 
-          {/* In-App PWA Install Banner & Guidance */}
-          <PwaInstallPrompt />
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/patient" replace />} />
+              </Routes>
+            </ErrorBoundary>
+          </main>
         </div>
       </Router>
     </AppProvider>

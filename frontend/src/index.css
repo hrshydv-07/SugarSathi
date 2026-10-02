@@ -2,19 +2,46 @@
 
 @layer base {
   :root {
-    --color-terracotta: #c2410c;
-    --color-silk-gold: #d97706;
-    --color-tea-green: #15803d;
-    --color-brahmaputra: #1e3a8a;
-    --color-warm-bg: #faf7f2;
-    --color-warm-card: #ffffff;
-    --color-warm-border: #e7ded3;
+    /* Healthcare Design Tokens - DiaCare Senior */
+    --diacare-bg: #F8FAFC;
+    --diacare-surface: #FFFFFF;
+    --diacare-primary: #0F2942;
+    --diacare-primary-hover: #1E3A8A;
+    --diacare-secondary: #0D9488;
+    --diacare-secondary-hover: #14B8A6;
+    --diacare-text: #0F172A;
+    --diacare-text-muted: #475569;
+    --diacare-border: #E2E8F0;
+    --diacare-success: #059669;
+    --diacare-success-bg: #ECFDF5;
+    --diacare-warning: #D97706;
+    --diacare-warning-bg: #FFFBEB;
+    --diacare-danger: #DC2626;
+    --diacare-danger-bg: #FEF2F2;
+    --diacare-focus: #2563EB;
+
+    /* Senior-first typography base scale */
+    --base-font-size: 18px;
+    --senior-btn-height: 56px;
+  }
+
+  /* Font size preference modifiers */
+  html.font-normal {
+    --base-font-size: 18px;
+  }
+  html.font-large {
+    --base-font-size: 21px;
+  }
+  html.font-xlarge {
+    --base-font-size: 24px;
   }
 
   body {
-    background-color: var(--color-warm-bg);
-    color: #1f2937;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--diacare-bg);
+    color: var(--diacare-text);
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--base-font-size);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -26,13 +53,69 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 0;
-    text-align: left;
-    border: none;
+  }
+
+  /* Accessible focus indicators for keyboard & accessibility */
+  *:focus-visible {
+    outline: 3px solid var(--diacare-focus);
+    outline-offset: 2px;
   }
 }
 
-/* Custom scrollbar for horizontal reels */
+/* Senior Touch Targets */
+.touch-target-senior {
+  min-height: 56px;
+  min-width: 56px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.touch-target-senior:active {
+  transform: scale(0.98);
+}
+
+/* Print Styles for 1-Page Doctor Report */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+  }
+
+  header, nav, footer, .no-print, button, .install-banner {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .doctor-report-page {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* Subtle animations */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 0.4; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s infinite ease-in-out;
+}
+
+/* Custom scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -40,24 +123,3 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-/* Animations */
-@keyframes pulse-gentle {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.animate-pulse-gentle {
-  animation: pulse-gentle 2.5s ease-in-out infinite;
-}
-
-/* Sound wave animation for audio playback */
-@keyframes wave-bar {
-  0%, 100% { height: 6px; }
-  50% { height: 22px; }
-}
-
-.animate-wave-1 { animation: wave-bar 0.9s ease-in-out infinite; }
-.animate-wave-2 { animation: wave-bar 0.9s ease-in-out 0.2s infinite; }
-.animate-wave-3 { animation: wave-bar 0.9s ease-in-out 0.4s infinite; }
-

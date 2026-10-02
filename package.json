@@ -1,12 +1,22 @@
 {
-  "name": "smriti",
-  "version": "1.0.0",
+  "name": "diacare-senior",
+  "version": "2.0.0",
+  "description": "Personalized Diabetes Management for Senior Citizens (PS Code: CXHPS05)",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "start": "cd backend && npm start"
+    "build": "npm run build --prefix frontend",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm start --prefix backend",
+    "seed": "node backend/seed.js",
+    "lint": "npm run lint --prefix frontend"
   },
-  "dependencies": {
-    "@google/genai": "^2.19.0",
-    "twilio": "^6.1.0"
-  }
+  "keywords": [
+    "diabetes",
+    "senior-care",
+    "geriatric-health",
+    "voice-first",
+    "pwa",
+    "accessibility"
+  ],
+  "author": "Hackathon Team",
+  "license": "ISC"
 }

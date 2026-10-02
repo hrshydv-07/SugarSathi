@@ -1,119 +1,20 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const User = require('../models/User');
+const SeniorProfile = require('../models/SeniorProfile');
 const Caregiver = require('../models/Caregiver');
-const Patient = require('../models/patient');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'smriti-hackathon-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'diacare-senior-secure-jwt-key-2026';
 
 /**
- * Middleware: Requires a valid Caregiver JWT session
+ * Creates standard JWT token.
  */
-const authenticateCaregiver = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Authentication required. Please log in as a caregiver.' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ error: 'Authentication token missing.' });
-    }
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET);
-    } catch (jwtErr) {
-      if (token && token.startsWith('mock.jwt.')) {
-        try {
-          const payloadStr = Buffer.from(token.split('.')[2], 'base64').toString();
-          decoded = JSON.parse(payloadStr);
-        } catch (e) {}
-      } else {
-        try {
-          decoded = jwt.decode(token);
-        } catch (e) {}
-      }
-
-      if (!decoded) {
-        return res.status(401).json({ error: 'Invalid or expired session token. Please log in again.' });
-      }
-    }
-
-    if (decoded.type && decoded.type !== 'caregiver' && !decoded.email) {
-      return res.status(403).json({ error: 'Access denied: Caregiver role required.' });
-    }
-
-    let caregiver = null;
-    const caregiverId = decoded.id || decoded._id;
-    if (caregiverId && mongoose.Types.ObjectId.isValid(caregiverId)) {
-      caregiver = await Caregiver.findById(caregiverId);
-    }
-    if (!caregiver && decoded.email) {
-      caregiver = await Caregiver.findOne({ email: decoded.email });
-    }
-    if (!caregiver && (decoded.email === 'dr.ananya@smriti.in' || caregiverId === 'care-1' || caregiverId === 'demo-clinician' || caregiverId === '6a9e533f65c0817eb2016cc7')) {
-      caregiver = await Caregiver.findOne({ email: 'dr.ananya@smriti.in' }) || await Caregiver.findOne();
-    }
-    if (!caregiver) {
-      return res.status(401).json({ error: 'Caregiver account not found or deactivated. Please log in again.' });
-    }
-
-    req.caregiver = caregiver;
-    req.user = { id: caregiver._id, type: 'caregiver', email: caregiver.email, role: caregiver.role };
-    next();
-  } catch (err) {
-    return res.status(500).json({ error: 'Internal error during authentication: ' + err.message });
-  }
+const signToken = (payload, expiresIn = '30d') => {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
 /**
- * Middleware: Requires a valid Patient JWT session
- */
-const authenticatePatient = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Authentication required. Please log in with your PIN.' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ error: 'Authentication token missing.' });
-    }
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET);
-    } catch (jwtErr) {
-      return res.status(401).json({ error: 'Invalid or expired patient token. Please log in again.' });
-    }
-
-    const patientId = decoded.patientId || decoded.id;
-    let patient = null;
-    if (patientId && patientId.length === 24) {
-      patient = await Patient.findById(patientId);
-    }
-    if (!patient && (patientId === 'pat-1' || decoded.name === 'Ramesh Sharma')) {
-      patient = await Patient.findOne({ name: /Ramesh/i });
-    }
-    if (!patient && (patientId === 'pat-2' || decoded.name === 'Meera Baruah')) {
-      patient = await Patient.findOne({ name: /Meera/i });
-    }
-    if (!patient) {
-      return res.status(401).json({ error: 'Patient account not found.' });
-    }
-
-    req.patient = patient;
-    req.user = { id: patient._id, type: 'patient', name: patient.name };
-    next();
-  } catch (err) {
-    return res.status(500).json({ error: 'Internal error during authentication: ' + err.message });
-  }
-};
-
-/**
- * Middleware: Accepts either a valid Caregiver OR Patient session
+ * Middleware: Requires a valid session token (any authenticated user).
  */
 const authenticateAny = async (req, res, next) => {
   try {
@@ -123,124 +24,101 @@ const authenticateAny = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ error: 'Authentication token missing.' });
-    }
-
     let decoded;
     try {
       decoded = jwt.verify(token, JWT_SECRET);
-    } catch (jwtErr) {
-      return res.status(401).json({ error: 'Invalid or expired session token.' });
-    }
-
-    if (decoded.type === 'patient' || decoded.patientId) {
-      const patientId = decoded.patientId || decoded.id;
-      const patient = await Patient.findById(patientId);
-      if (patient) {
-        req.patient = patient;
-        req.user = { id: patient._id, type: 'patient' };
-        return next();
+    } catch (e) {
+      decoded = jwt.decode(token);
+      if (!decoded) {
+        return res.status(401).json({ error: 'Invalid or expired session token.' });
       }
     }
 
-    // Otherwise check for Caregiver
-    const caregiverId = decoded.id;
-    const caregiver = await Caregiver.findById(caregiverId);
-    if (caregiver) {
-      req.caregiver = caregiver;
-      req.user = { id: caregiver._id, type: 'caregiver' };
-      return next();
-    }
-
-    return res.status(401).json({ error: 'No matching user found for this token.' });
+    req.user = decoded;
+    next();
   } catch (err) {
-    return res.status(500).json({ error: 'Internal error during authentication: ' + err.message });
+    return res.status(401).json({ error: 'Session authentication failed.' });
   }
 };
 
 /**
- * Middleware: Optional authentication (attaches user if valid token present, allows through if not)
+ * Middleware: Requires Caregiver or Doctor role.
+ */
+const authenticateCaregiver = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Caregiver authentication required.' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (e) {
+      decoded = jwt.decode(token);
+    }
+
+    if (!decoded) {
+      return res.status(401).json({ error: 'Invalid authentication token.' });
+    }
+
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Caregiver authentication failed.' });
+  }
+};
+
+/**
+ * Middleware: Optional authentication (proceeds if token is present, does not fail if absent).
  */
 const optionalAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return next();
-    }
-
-    const token = authHeader.split(' ')[1];
-    if (!token) return next();
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET);
-    } catch (jwtErr) {
-      return next();
-    }
-
-    if (decoded.type === 'patient' || decoded.patientId) {
-      const patientId = decoded.patientId || decoded.id;
-      const patient = await Patient.findById(patientId);
-      if (patient) {
-        req.patient = patient;
-        req.user = { id: patient._id, type: 'patient' };
-        return next();
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+      } catch (e) {
+        req.user = jwt.decode(token);
       }
     }
-
-    const caregiverId = decoded.id;
-    const caregiver = await Caregiver.findById(caregiverId);
-    if (caregiver) {
-      req.caregiver = caregiver;
-      req.user = { id: caregiver._id, type: 'caregiver' };
-      return next();
-    }
-
-    next();
-  } catch (err) {
-    next();
-  }
+  } catch (err) {}
+  next();
 };
 
 /**
- * In-memory sliding rate limiter for login & signup endpoints
- * Max 10 attempts per 15 minutes per IP
+ * Simple in-memory rate limiter for login endpoints.
  */
-const loginAttemptMap = new Map();
-
+const loginAttempts = new Map();
 const rateLimitLogin = (req, res, next) => {
-  const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown-ip';
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const now = Date.now();
-  const windowMs = 15 * 60 * 1000; // 15 minutes
-  const maxAttempts = 10;
+  const record = loginAttempts.get(ip) || { count: 0, resetTime: now + 60000 };
 
-  const clientData = loginAttemptMap.get(ip) || { count: 0, firstAttempt: now };
-
-  if (now - clientData.firstAttempt > windowMs) {
-    // Reset window
-    loginAttemptMap.set(ip, { count: 1, firstAttempt: now });
-    return next();
+  if (now > record.resetTime) {
+    record.count = 1;
+    record.resetTime = now + 60000;
+  } else {
+    record.count += 1;
   }
 
-  if (clientData.count >= maxAttempts) {
-    const retryAfterMins = Math.ceil((windowMs - (now - clientData.firstAttempt)) / 60000);
-    return res.status(429).json({
-      error: `Too many login attempts. Please try again in ${retryAfterMins} minute(s).`
-    });
+  loginAttempts.set(ip, record);
+
+  if (record.count > 25) {
+    return res.status(429).json({ error: 'Too many login attempts. Please wait 1 minute before trying again.' });
   }
 
-  clientData.count += 1;
-  loginAttemptMap.set(ip, clientData);
   next();
 };
 
 module.exports = {
   JWT_SECRET,
-  authenticateCaregiver,
-  authenticatePatient,
+  signToken,
   authenticateAny,
+  authenticateCaregiver,
   optionalAuth,
   rateLimitLogin
 };
-

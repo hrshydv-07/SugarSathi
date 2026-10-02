@@ -1,194 +1,129 @@
 const cron = require('node-cron');
-const { sendWhatsAppMessage } = require('../services/whatsappService');
-const Patient = require('../models/patient');
+const SeniorProfile = require('../models/SeniorProfile');
 const Reminder = require('../models/Reminder');
-const { getPatientGameUrl } = require('../utils/token');
-const { saveChatMessage } = require('../services/aiService');
-const { getTranslatedSpeech } = require('../services/translationService');
-require('dotenv').config();
+const Medication = require('../models/Medication');
+const { sendWhatsAppNotification } = require('../services/whatsappService');
 
-// 5+ Template variations for combined reminder messages
-function getCombinedReminderMessage(name, reminderItems) {
-  const listText = reminderItems.map(item => `• ${item}`).join('\n');
+/**
+ * Checks whether current time falls within patient's configured quiet hours.
+ */
+function isWithinQuietHours(senior) {
+  if (!senior.quietHours || !senior.quietHours.enabled) return false;
+  
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const templates = [
-    `Good morning, ${name}! ☀️ Smriti here with a gentle check-in for your day:\n\n${listText}\n\nWhenever you've taken care of these, just reply DONE to let me know! 🌸`,
-    `Rise and shine, ${name}! 🌸 Here is what's on your health routine today:\n\n${listText}\n\nJust reply whenever you've completed them. Wishing you a peaceful day! 💚`,
-    `Hello dear ${name}! Hope you had a restful sleep ☀️ Here are your gentle daily reminders:\n\n${listText}\n\nPlease reply DONE once you're done. Taking good care of you! 🌿`,
-    `Hi ${name}, a warm hello from Smriti! 🌼 Just a caring note for today's routine:\n\n${listText}\n\nLet me know with a quick reply once taken. You're doing wonderful! 🌸`,
-    `Good day, ${name}! ☀️ Hope you are feeling refreshed. Here are your scheduled reminders for today:\n\n${listText}\n\nReply DONE anytime once you've finished. Have a lovely morning! 💚`
-  ];
+  const [startH, startM] = (senior.quietHours.startTime || '22:00').split(':').map(Number);
+  const [endH, endM] = (senior.quietHours.endTime || '07:00').split(':').map(Number);
 
-  return templates[Math.floor(Math.random() * templates.length)];
-}
+  const startMinutes = startH * 60 + startM;
+  const endMinutes = endH * 60 + endM;
 
-// 5+ Template variations for separate game link invitations
-function getSeparateGameMessage(name, gameUrl) {
-  const gameTemplates = [
-    `When you have a quiet moment, I've got a fun little memory game ready for you today! 🧩\n\nTap here to play: ${gameUrl}`,
-    `Whenever you feel relaxed today, try today's cheerful brain puzzle! 🧠✨\n\nTap here to play: ${gameUrl}`,
-    `I've set up a gentle North Eastern memory puzzle for you today, ${name}! 🌸\n\nTap here to play: ${gameUrl}`,
-    `Take a relaxing pause and enjoy today's quick brain game 🌿\n\nTap here to play: ${gameUrl}`,
-    `Here is today's fun memory challenge to keep your mind sharp and joyful, ${name}! 🌼\n\nTap here to play: ${gameUrl}`
-  ];
-
-  return gameTemplates[Math.floor(Math.random() * gameTemplates.length)];
-}
-
-function getReminderLabel(type) {
-  switch (type) {
-    case 'medicine': return '💊 Morning medicine';
-    case 'hydration': return '💧 Fresh water / warm herbal tea';
-    case 'activity': return '🚶 Gentle walk / light stretches';
-    case 'appointment': return '🩺 Scheduled doctor check-in';
-    default: return '🌸 Daily health check';
+  if (startMinutes > endMinutes) {
+    // Overnight window (e.g., 22:00 to 07:00)
+    return currentMinutes >= startMinutes || currentMinutes < endMinutes;
   }
+  return currentMinutes >= startMinutes && currentMinutes < endMinutes;
 }
 
-async function sendDailyPatientReminders() {
-  console.log('⏰ Starting dynamic reminder dispatch at', new Date().toLocaleString());
-  const results = {
-    timestamp: new Date().toISOString(),
-    patientsChecked: 0,
-    combinedRemindersSentCount: 0,
-    gameLinksSentCount: 0,
-    details: []
-  };
+/**
+ * Evaluates pending diabetes reminders, triggers reminders and escalates to caregiver if missed.
+ */
+async function processDiabetesReminders() {
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    return; // Skip cron tick when database is not connected
+  }
+
+  const now = new Date();
+  console.log(`⏰ [Reminder Engine] Evaluating scheduled reminders at ${now.toLocaleTimeString()}`);
 
   try {
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
+    const seniors = await SeniorProfile.find();
+    
+    for (const senior of seniors) {
+      // Find today's reminders that are pending
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date();
+      endOfDay.setHours(23, 59, 59, 999);
 
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-
-    const patients = await Patient.find();
-    results.patientsChecked = patients.length;
-    console.log(`📋 Found ${patients.length} patient(s) to check for reminders`);
-
-    for (const patient of patients) {
-      if (!patient.phoneNumber) continue;
-
-      const pendingReminders = await Reminder.find({
-        patientId: patient._id,
-        acknowledged: false,
-        scheduledTime: { $gte: startOfToday, $lte: endOfToday }
+      const reminders = await Reminder.find({
+        patientId: senior._id,
+        scheduledTime: { $gte: startOfDay, $lte: endOfDay },
+        acknowledged: false
       });
 
-      const firstName = patient.name.split(' ')[0] || patient.name;
-      const patientSummary = {
-        patientId: patient._id,
-        patientName: patient.name,
-        phoneNumber: patient.phoneNumber,
-        combinedReminder: {},
-        gameLink: {}
-      };
+      for (const reminder of reminders) {
+        const scheduledTime = new Date(reminder.scheduledTime);
+        const minutesDiff = Math.floor((now - scheduledTime) / (1000 * 60));
 
-      const patientLang = patient.language || 'en';
+        // Skip future reminders
+        if (minutesDiff < 0) continue;
 
-      // 1. Process Combined Reminder Message
-      if (pendingReminders.length > 0) {
-        const reminderLabels = pendingReminders.map(r => getReminderLabel(r.type));
-        let combinedMessage = getCombinedReminderMessage(firstName, reminderLabels);
+        const quiet = isWithinQuietHours(senior);
 
-        // Translate reminder message if patient has a non-English regional preference
-        try {
-          const trans = await getTranslatedSpeech({ textToSpeak: combinedMessage, targetLanguage: patientLang });
-          if (trans && trans.translated_text) {
-            combinedMessage = trans.translated_text;
+        // Stage 1: Initial Reminder (0 to 15 min after scheduled time)
+        if (minutesDiff >= 0 && !reminder.firstReminderSent) {
+          if (!quiet) {
+            console.log(`📢 [Reminder Stage 1] Sending initial reminder to ${senior.name}: ${reminder.title}`);
+            reminder.firstReminderSent = true;
+            await reminder.save();
           }
-        } catch (e) {
-          console.warn('⚠️ [Reminder Cron] Translation error, sending original template:', e.message);
         }
 
-        console.log(`📨 Sending 1 combined reminder message (${pendingReminders.length} items) to ${patient.name} (${patient.phoneNumber})`);
-        await sendWhatsAppMessage(patient.phoneNumber, combinedMessage);
-        
-        results.combinedRemindersSentCount++;
-        patientSummary.combinedReminder = {
-          status: 'SENT_JUST_NOW',
-          action: 'Sent 1 combined WhatsApp message',
-          pendingCount: pendingReminders.length,
-          pendingItems: reminderLabels,
-          messagePreview: combinedMessage.split('\n')[0]
-        };
-        await saveChatMessage(patient._id, patient.phoneNumber, 'model', combinedMessage);
-      } else {
-        console.log(`ℹ️ No pending reminders for ${patient.name} (${patient.phoneNumber})`);
-        patientSummary.combinedReminder = {
-          status: 'SKIPPED_NO_PENDING_REMINDERS',
-          action: 'Skipped',
-          pendingCount: 0,
-          reason: 'All scheduled reminders for today are already acknowledged or completed'
-        };
-      }
-
-      // 2. Process Separate Game Link Message (Only once per calendar day)
-      const lastGameDate = patient.lastGameLinkSentDate ? new Date(patient.lastGameLinkSentDate) : null;
-      const alreadySentGameToday = lastGameDate && (
-        lastGameDate.getFullYear() === startOfToday.getFullYear() &&
-        lastGameDate.getMonth() === startOfToday.getMonth() &&
-        lastGameDate.getDate() === startOfToday.getDate()
-      );
-
-      if (!alreadySentGameToday) {
-        const gameUrl = getPatientGameUrl(patient._id.toString());
-        let gameMessage = getSeparateGameMessage(firstName, gameUrl);
-
-        try {
-          const transGame = await getTranslatedSpeech({ textToSpeak: gameMessage, targetLanguage: patientLang });
-          if (transGame && transGame.translated_text) {
-            gameMessage = transGame.translated_text;
+        // Stage 2: Second Gentle Follow-up (15 to 45 min after scheduled time)
+        else if (minutesDiff >= 15 && minutesDiff < 45 && !reminder.secondReminderSent) {
+          if (!quiet) {
+            console.log(`📢 [Reminder Stage 2] Sending second follow-up to ${senior.name}: ${reminder.title}`);
+            reminder.secondReminderSent = true;
+            await reminder.save();
           }
-        } catch (e) {
-          console.warn('⚠️ [Reminder Cron] Game message translation error:', e.message);
         }
 
-        console.log(`🧩 Sending separate daily game link message to ${patient.name} (${patient.phoneNumber})`);
-        await sendWhatsAppMessage(patient.phoneNumber, gameMessage);
+        // Stage 3: Caregiver Escalation (>45 min overdue and still unacknowledged)
+        else if (minutesDiff >= 45 && !reminder.caregiverEscalated) {
+          reminder.status = 'MISSED';
+          reminder.caregiverEscalated = true;
+          reminder.caregiverEscalatedAt = now;
+          await reminder.save();
 
-        results.gameLinksSentCount++;
-        patient.lastGameLinkSentDate = new Date();
-        await patient.save();
+          // Dispatch caregiver WhatsApp alert if consent is active
+          if (senior.consentSettings?.caregiverSharing && senior.consentSettings?.whatsappAlerts) {
+            const timeStr = scheduledTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const message = `🔔 DiaCare Senior Alert\n\n${senior.name} has not confirmed their scheduled ${reminder.title} (${reminder.detail || 'medication'}) scheduled for ${timeStr}.\n\nPlease check in with them to ensure their health routine is maintained.`;
 
-        patientSummary.gameLink = {
-          status: 'SENT_JUST_NOW',
-          action: 'Sent 1 separate game invitation WhatsApp message',
-          gameUrl: gameUrl,
-          sentAt: patient.lastGameLinkSentDate.toISOString(),
-          messagePreview: gameMessage.split('\n')[0]
-        };
-        await saveChatMessage(patient._id, patient.phoneNumber, 'model', gameMessage);
-      } else {
-        console.log(`ℹ️ Game link already sent today to ${patient.name}`);
-        patientSummary.gameLink = {
-          status: 'SKIPPED_ALREADY_SENT_TODAY',
-          action: 'Skipped',
-          reason: `Game link was already dispatched earlier today (at ${lastGameDate.toLocaleTimeString()}). To re-test, reset flags via POST /api/test/reset-daily-flags/${patient.phoneNumber}`,
-          lastSentAt: lastGameDate.toISOString()
-        };
+            await sendWhatsAppNotification({
+              toNumber: senior.caregiverPhone || senior.emergencyContact?.phone || '+919876543210',
+              messageBody: message,
+              patientId: senior._id,
+              recipientType: 'caregiver',
+              recipientName: senior.caregiverName || 'Caregiver',
+              triggerReason: 'missed_medicine'
+            });
+            console.log(`🚨 [Caregiver Escalation] Missed dose alert sent for ${senior.name}`);
+          }
+        }
       }
-
-      results.details.push(patientSummary);
     }
-
-    return results;
   } catch (err) {
-    console.error('❌ Error sending daily reminders:', err.message);
-    results.error = err.message;
-    return results;
+    console.error('❌ [Reminder Engine] Error processing reminders:', err.message);
   }
 }
 
-// Scheduled Cron: Runs every day at 9:00 AM (server time)
-cron.schedule('0 9 * * *', () => {
-  sendDailyPatientReminders();
-});
-
-console.log('📅 Reminder cron job initialized (runs daily at 9:00 AM)');
+/**
+ * Initializes cron jobs for periodic reminder checks.
+ */
+function initReminderCron() {
+  // Check every 5 minutes
+  cron.schedule('*/5 * * * *', () => {
+    processDiabetesReminders();
+  });
+  console.log('✅ [Cron] Diabetes reminder & escalation worker scheduled (every 5 minutes).');
+}
 
 module.exports = {
-  sendDailyPatientReminders,
-  getCombinedReminderMessage,
-  getSeparateGameMessage
+  initReminderCron,
+  processDiabetesReminders,
+  isWithinQuietHours
 };

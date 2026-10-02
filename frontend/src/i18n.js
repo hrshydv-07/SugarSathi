@@ -1,28 +1,22 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import enTranslation from './locales/en.json';
-import asTranslation from './locales/as.json';
 import hiTranslation from './locales/hi.json';
+import mrTranslation from './locales/mr.json';
 
-const savedLang = localStorage.getItem('smriti_language') || localStorage.getItem('smriti_selected_lang') || 'en';
+const savedLang = localStorage.getItem('diacare_language') || 'en';
 
 const resources = {
-  en: {
-    translation: enTranslation
-  },
-  as: {
-    translation: asTranslation
-  },
-  hi: {
-    translation: hiTranslation
-  }
+  en: { translation: enTranslation },
+  hi: { translation: hiTranslation },
+  mr: { translation: mrTranslation }
 };
 
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: ['as', 'hi'].includes(savedLang) ? savedLang : 'en',
+    lng: ['hi', 'mr', 'en'].includes(savedLang) ? savedLang : 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false

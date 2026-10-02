@@ -1,341 +1,284 @@
-<div align="center">
-
-# 🌸 Smriti (স্মৃতি / स्मृति)
-### *AI-Powered Cognitive Care & Memory Companion Ecosystem for Elderly Dementia Patients*
-#### **Smart India Hackathon 2026 (SIH26003) • Ministry of Development of North Eastern Region (MDoNER)**
-
-[![Live Web App](https://img.shields.io/badge/Live%20App-smriti--puce.vercel.app-B5502E.svg?style=for-the-badge&logo=vercel)](https://smriti-puce.vercel.app)
-[![ML Engine](https://img.shields.io/badge/ML%20Engine-dementia--ai--engine.onrender.com-FF6B6B.svg?style=for-the-badge&logo=render)](https://dementia-ai-engine.onrender.com/docs)
-[![WhatsApp Bot](https://img.shields.io/badge/WhatsApp%20Bot-wa.me%2F15556680031-25D366.svg?style=for-the-badge&logo=whatsapp)](https://wa.me/15556680031?text=Hi%20Smriti)
-
-<br/>
-
-[![React 19](https://img.shields.io/badge/React-19.2-blue.svg)](https://react.dev/)
-[![TailwindCSS v4](https://img.shields.io/badge/TailwindCSS-v4-38bdf8.svg)](https://tailwindcss.com/)
-[![PWA Offline-First](https://img.shields.io/badge/PWA-Workbox%20%2B%20IndexedDB-purple.svg)](https://web.dev/progressive-web-apps/)
-[![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)
-[![MongoDB Atlas](https://img.shields.io/badge/MongoDB-Atlas%20Cloud-47A248.svg)](https://www.mongodb.com/)
-[![Google Gemini AI](https://img.shields.io/badge/Google%20Gemini-Multimodal%20AI-8E75B2.svg)](https://deepmind.google/technologies/gemini/)
-[![DPDP Act 2023](https://img.shields.io/badge/DPDP%20Act%202023-Compliant-success.svg)](https://smriti-puce.vercel.app/privacy-policy)
-[![WebAuthn FIDO2](https://img.shields.io/badge/WebAuthn-FIDO2%20Biometrics-orange.svg)](https://webauthn.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-<p align="center">
-  <b>Smriti</b> is an evidence-based, culturally grounded cognitive care platform bridging elderly dementia patients, family caregivers, and clinicians — uniting an <b>offline-first PWA</b>, <b>5 culturally attuned cognitive games</b>, <b>multilingual voice synthesis</b> (Assamese, Hindi, English), <b>Google Gemini AI</b>, a <b>Meta WhatsApp companion bot</b>, and a <b>live Machine Learning telemetry engine</b> on Render.
-</p>
-
-</div>
+# 🩺 DiaCare Senior (डायकेयर सीनियर / डायकेअर सीनियर)
+### Personalized Diabetes Management for Senior Citizens
+**Hackathon Problem Statement Code:** `CXHPS05`  
+**Target Group:** Senior Citizens (Ages 60+), Family Caregivers, and Treating Clinicians.
 
 ---
 
-## 1. Project Information
+## 📌 Executive Summary & Core Problem
 
-| Field | Details |
-|---|---|
-| **Project Title** | Smriti — AI-Based Cognitive Gaming and Memory Assistance Platform for Elderly Dementia Patients |
-| **PS ID** | SIH26003 |
-| **PS Title** | AI-Based Cognitive Gaming and Memory Assistance Platform for Elderly Dementia Patients in NER |
-| **Category** | Software |
-| **Theme** | MedTech / BioTech / HealthTech |
-| **Nodal Ministry** | Ministry of Development of North Eastern Region (MDoNER) |
-| **Team Name** | Design Divas |
-| **Institution** | NSUT, New Delhi — Branch: ITNS |
+Older adults managing diabetes encounter severe daily friction:
+- **Complex Medication Routines:** Multi-dose oral hypoglycemic agents and insulin schedules are easily forgotten or taken irregularly.
+- **Cognitive & Visual Barriers:** Standard mobile health applications feature small fonts, intricate submenus, and confusing medical jargon that intimidate seniors.
+- **Delayed Intervention:** Mild hypoglycemia (shakiness, dizziness) or post-prandial hyperglycemia often go unnoticed until clinical emergencies arise.
+- **Caregiver Isolation:** Family members lack real-time visibility into whether daily medicines were taken or if warning signs appeared.
+
+**DiaCare Senior** addresses this with an elderly-friendly, voice-first, personalized diabetes management ecosystem connecting the **Senior Citizen**, their **Family Caregiver**, and their **Physician**.
 
 ---
 
-## 2. Problem Statement
+## 🌟 Key Innovations & Architecture
 
-Over **8.8 million Indians** live with dementia (2026), with **280,000–350,000 cases** concentrated in India's 8 North-Eastern states. The NER faces a uniquely severe crisis:
+```
+                       ┌─────────────────────────┐
+                       │   SENIOR CITIZEN MODE   │
+                       │   (Voice / Large UI)    │
+                       └────────────┬────────────┘
+                                    │
+                                    ▼
+       ┌────────────────────────────────────────────────────────┐
+       │     DETERMINISTIC SAFETY & RISK ENGINE (riskEngine.js) │
+       │     (ADA / RSSDI Geriatric Thresholds + Config)        │
+       │     - In-Target (80–180 mg/dL)                         │
+       │     - Mild Hypo (54–69 mg/dL) -> Glucose Snack         │
+       │     - Severe Crisis (<54 or >=300 mg/dL) -> Urgent     │
+       └────────────────────────────┬───────────────────────────┘
+                                    │
+                  ┌─────────────────┴─────────────────┐
+                  ▼                                   ▼
+       ┌─────────────────────┐             ┌─────────────────────┐
+       │ CAREGIVER PORTAL    │             │ DOCTOR REPORT VIEW  │
+       │ - Real-Time Alerts  │             │ - 1-Page Summary    │
+       │ - WhatsApp Loop     │             │ - Time In Range %   │
+       │ - 7-Day Adherence % │             │ - Clinical Trends   │
+       └─────────────────────┘             └─────────────────────┘
+```
 
-- 🏥 **85%+ of neurologists** operate exclusively out of Guwahati — rural hill-state patients have near-zero specialist access.
-- 🌧️ **Mountainous terrain and monsoon floods** sever physical access to healthcare. 2G/3G internet causes cloud-dependent apps to crash mid-session.
-- 🗣️ **220+ indigenous dialects** (Assamese, Bodo, Khasi, Mizo) make standard Western cognitive tests medically invalid for NER demographics.
-- 😶 **Cultural stigma** causes over 90% of families to dismiss early memory loss as normal aging (*"বুঢ়া বয়সৰ পাহৰণি"*), resulting in diagnosis only at advanced Stage 3 or 4.
-- 📱 **No existing app** offers offline-first operation, multilingual Assamese voice guidance, and culturally grounded cognitive exercises for NER elderly patients.
+1. **Voice-First Input (English, Hindi, Marathi):**
+   - Seniors can speak naturally: *"Mera sugar 280 hai"* or *"माझी साखर २४५ आहे"*.
+   - In-browser Web Speech API transcribes speech, extracts numeric glucose and meal context, confirms with user, and provides spoken feedback at a calm pace (0.88x speed).
+2. **Safe Deterministic Risk Engine (`riskEngine.js`):**
+   - **Critical Safety Guardrail:** No LLM is permitted to diagnose or decide medical risk levels.
+   - All readings are checked deterministically against clinician-configured thresholds.
+   - Provides clear, non-frightening "Why?" explainability explaining the matched clinical rule and safe next step.
+3. **Multi-Stage Medication Escalation & WhatsApp Care Loop:**
+   - Scheduled Dose → Senior marks **TAKEN** / **NOT NOW**.
+   - Missed Dose: Initial Reminder → Second Follow-up (15m) → Automatic Caregiver WhatsApp Alert (>45m).
+   - Real WhatsApp Cloud API support + seamless **MOCK MODE** for offline demonstrations.
+4. **Caregiver Oversight Dashboard:**
+   - Live medication adherence compliance rate (%).
+   - Multi-factor severity indicators (Icon + Status + Text, never color alone).
+   - 7-Day glucose timeline with Time in Range (TIR %) metrics.
+5. **1-Page Doctor Clinical Report:**
+   - Formatted for physical print or PDF download.
+   - Includes mean glucose, Time in Range %, fasting/post-meal averages, medication compliance table, flagged risk events, and mandatory clinical disclaimers (*"Generated from patient logs. Not a diagnostic report."*).
+6. **Indian Food Guidance & Fasting Modes:**
+   - Culturally authentic meal ideas: Oats upma, idli with dal sambar, moong dal khichdi, roasted chana, makhana.
+   - Guidance for religious fasting days (Navratri, Ekadashi) with hydration and low-glycemic permitted snacks.
+7. **Offline-First PWA (IndexedDB Queue):**
+   - Allows recording blood sugar, marking medicines, and logging symptoms without internet.
+   - Auto-synchronizes with MongoDB upon network restoration.
+8. **Granular Privacy & Consent Controls:**
+   - Role-based data partitioning between Senior, Caregiver, and Clinician.
+   - One-tap sharing toggles, quiet hours protection, and data deletion requests.
 
 ---
 
-## 3. Proposed Solution
-
-**Smriti** is a resilient **3-Tier Delivery Ecosystem**:
-
-| Tier | Channel | Reach |
-|---|---|---|
-| **Tier 1 (Core)** | Offline-first PWA + Meta WhatsApp AI companion bot | Any smartphone, even 2G |
-| **Tier 2 (Fallback)** | IVR automated voice calls + SMS alerts | Feature phones without internet |
-| **Tier 3 (Field Care)** | ASHA worker tablet mode with local sync | Door-to-door community screening |
-
-The platform delivers:
-1. 🎮 **5 culturally attuned cognitive games** targeting distinct neuroanatomical pathways using authentic NER assets (Kaji Nemu, Bhut Jolokia, Assamese Dhol, Pepa horn, Mekhela patterns).
-2. 🗣️ **Multilingual voice guidance** in Assamese (`as-IN`), Hindi (`hi-IN`), and English — with Google Gemini AI conversational companion.
-3. 📱 **Meta WhatsApp Cloud API bot** for automated medication reminders and bidirectional patient check-ins — zero new app learning curve.
-4. 🧠 **Live Machine Learning microservice** (Python + FastAPI on Render) for real-time adaptive game difficulty and longitudinal cognitive health scoring (0–100).
-5. 🩺 **Clinical Caregiver Dashboard** with 7-day adherence charts, red-flag overdue medication alerts, and exportable cognitive telemetry.
-6. 📶 **100% offline-first PWA** (Workbox + IndexedDB) — full functionality during complete internet outages.
-7. 🔐 **WebAuthn FIDO2 biometrics** — hardware fingerprint/face login without passwords, compliant with DPDP Act 2023.
-
----
-
-## 4. Key Features
-
-| Feature | Description |
-|---|---|
-| 🔑 **Biometric Login** | Tactile 4-digit PIN + WebAuthn FIDO2 hardware fingerprint/face authentication |
-| 📅 **Horizon Routines** | Chronological daily schedule with audio read-aloud and 1-tap completion |
-| 🎮 **5 Cognitive Games** | Market Day Basket, Daily Routine Sequencer, Faces & Family Recall, Sound & Rhythm Match, Odd One Out |
-| 🤖 **Gemini AI Assistant** | Multimodal conversational assistant — text + voice, grounded in patient's live data |
-| 📲 **WhatsApp Bot** | Automated bilingual medication reminders with bidirectional patient sync |
-| 🧠 **Live ML Engine** | Adaptive difficulty + 0–100 cognitive health score + clinical status label |
-| 📸 **Memory Bank** | Family photo reminiscence vault with DPDP Act 2023 consent trails |
-| 🩺 **Caregiver Hub** | Real-time patient roster, red-flag alerts, reaction-time charts |
-| 📶 **Offline PWA** | Service worker pre-caching + IndexedDB queue + automatic background sync |
-| 🛡️ **DPDP Compliant** | Consent checkboxes, 30-day right to erasure, zero raw biometric storage |
-
----
-
-## 5. Technology Stack
+## 💻 Tech Stack
 
 | Layer | Technologies |
-|---|---|
-| **Frontend** | React 19.2, Vite 8.2, React Router v7, Tailwind CSS v4, Lucide React, i18next, Recharts |
-| **Offline PWA** | `vite-plugin-pwa`, Workbox Service Worker, IndexedDB (`idb`) |
-| **Voice & Speech** | Web Speech Synthesis API — Assamese, Hindi, English |
-| **Generative AI** | Google Gemini AI SDK (`@google/genai`) — multimodal text + voice |
-| **Machine Learning** | Python, Scikit-Learn, FastAPI — hosted on Render Cloud |
-| **Backend API** | Node.js, Express.js, Mongoose ODM, Node-Cron, bcrypt, JWT |
-| **Database** | MongoDB Atlas Cloud |
-| **APIs** | Meta WhatsApp Business Cloud API · Google OAuth 2.0 · Bhashini API (NER language TTS) |
-| **Security & Auth** | WebAuthn FIDO2 · bcrypt PIN hashing · DPDP Act 2023 |
-| **Deployment** | Vercel (Frontend) · Render (Backend & ML) · MongoDB Atlas (Database) |
+| :--- | :--- |
+| **Frontend** | React 19, Vite 8, Tailwind CSS v4, Lucide React, Recharts |
+| **PWA & Offline** | Vite PWA Plugin, Workbox, IndexedDB (`idb`) |
+| **Voice & Speech** | Browser Web Speech Recognition & Speech Synthesis (en-IN, hi-IN, mr-IN) |
+| **Internationalization** | i18next (English, Hindi, Marathi) |
+| **Backend** | Node.js, Express 5, Mongoose, Node-Cron, Axios |
+| **Database** | MongoDB Atlas / Local MongoDB |
+| **Security & Auth** | JWT Authentication, Bcrypt Password & PIN Hashing, Rate Limiting |
+| **AI Assistant** | Google Gemini API (Context-grounded assistant with clinical safety guardrails) |
+| **Notifications** | Meta WhatsApp Cloud API (with integrated Mock Mode fallback) |
 
 ---
 
-## 6. Architecture
+## 📂 Project Structure
 
-```text
-                         ┌────────────────────────────────────┐
-                         │    Senior Patient / Family Caregiver│
-                         └──────────┬──────────────┬──────────┘
-                                    │              │
-               React 19 PWA (Offline-First + IDB)  WhatsApp (Meta Cloud API)
-                                    │              │
-                                    ▼              ▼
-                         ┌──────────────────────────────────────────┐
-                         │         Express.js REST & Webhook API     │
-                         │  ├─ JWT & WebAuthn FIDO2 Auth             │
-                         │  ├─ Dynamic Routine & Alert Engine        │
-                         │  ├─ Cognitive Telemetry Logging           │
-                         │  ├─ ML Service Proxy & Fallback Wrapper   │
-                         │  └─ Node-Cron Reminder Scheduler          │
-                         └────────┬───────────────┬──────────────┬──┘
-                                  │               │              │
-                                  ▼               ▼              ▼
-                         ┌────────────────┐ ┌──────────────┐ ┌──────────────────┐
-                         │  MongoDB Atlas │ │ Google Gemini│ │  ML Engine (AI)  │
-                         │  · Patients   │ │ · Generative │ │  · Adaptive Diff.│
-                         │  · Reminders  │ │   Companion  │ │  · Health Score  │
-                         │  · GameLogs   │ │ · Voice Audio│ │  (Render Cloud)  │
-                         │  · Caregivers │ └──────────────┘ └──────────────────┘
-                         └────────────────┘
 ```
-
----
-
-## 7. Repository Structure
-
-```text
-Smriti/
-├── README.md
+├── backend/
+│   ├── jobs/
+│   │   └── reminderCron.js         # Multi-stage reminder scheduler & escalation worker
+│   ├── middleware/
+│   │   └── auth.js                 # Multi-role JWT auth & login rate limiting
+│   ├── models/
+│   │   ├── User.js                 # Unified user schema
+│   │   ├── SeniorProfile.js        # Senior profile, clinical targets, quiet hours, consent
+│   │   ├── GlucoseReading.js       # Blood sugar logs & deterministic risk outcome
+│   │   ├── Medication.js           # Prescribed medications and timings
+│   │   ├── Reminder.js             # Daily reminder instances & acknowledgement tracking
+│   │   ├── RiskEvent.js            # Flagged risk events for physician audit
+│   │   ├── Notification.js         # Notification dispatch audit log
+│   │   ├── SymptomLog.js           # Senior symptom check-ins
+│   │   ├── MealLog.js              # Indian meal logs
+│   │   ├── ActivityLog.js          # Walking and physical movement logs
+│   │   ├── Consent.js              # Granular sharing permissions
+│   │   ├── Caregiver.js            # Caregiver schema
+│   │   └── Doctor.js               # Clinician schema
+│   ├── routes/
+│   │   ├── authRoutes.js           # Senior PIN login, Caregiver login, Demo login
+│   │   ├── seniorRoutes.js         # Senior home bundle, symptoms, meals, activity, emergency
+│   │   ├── glucoseRoutes.js        # Voice transcription parsing, logging, trends, explainability
+│   │   ├── medicationRoutes.js     # Adherence, mark taken, simulate missed dose
+│   │   ├── caregiverRoutes.js      # Patient summary, notification feed, test alerts
+│   │   ├── doctorRoutes.js         # 1-page clinical summary report endpoint
+│   │   ├── aiRoutes.js             # Diabetes AI companion chat
+│   │   ├── demoRoutes.js           # Synthetic profile list & demo reset trigger
+│   │   └── whatsappWebhook.js      # Meta Graph API webhook & "DONE" message receiver
+│   ├── services/
+│   │   ├── riskEngine.js           # Deterministic rule engine & trend calculations
+│   │   ├── whatsappService.js      # WhatsApp dispatcher (REAL + MOCK mode)
+│   │   └── aiService.js            # Diabetes AI assistant with clinical guardrails
+│   ├── seed.js                     # Synthetic dataset populator (3 senior profiles)
+│   ├── server.js                   # Express server entry point & MongoDB connection
+│   └── .env.example
 ├── frontend/
 │   ├── public/
+│   │   ├── favicon.svg             # DiaCare medical shield icon
+│   │   ├── manifest.json           # PWA manifest
+│   │   └── offline.html            # Offline fallback screen
 │   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx          # Accessible header, font scaling, demo switcher
+│   │   │   ├── VoiceGlucoseModal.jsx # Voice recognition & large keypad modal
+│   │   │   ├── ExplanationModal.jsx# "Why?" explainable clinical reasoning modal
+│   │   │   ├── EmergencyModal.jsx  # Two-step emergency help modal
+│   │   │   ├── DiabetesAssistantModal.jsx # Diabetes AI companion modal
+│   │   │   └── PwaInstallPrompt.jsx# In-app PWA install banner
+│   │   ├── context/
+│   │   │   └── AppContext.jsx      # Global state, offline queue, language & font sizing
+│   │   ├── locales/
+│   │   │   ├── en.json             # English translations
+│   │   │   ├── hi.json             # Hindi translations
+│   │   │   └── mr.json             # Marathi translations
 │   │   ├── pages/
-│   │   │   ├── patient/          # Patient portal + 5 cognitive games
-│   │   │   └── caregiver/        # Caregiver dashboard + telemetry
-│   │   ├── services/             # API service layer (api.js)
-│   │   ├── context/              # Auth & patient context providers
-│   │   └── utils/                # speechUtils, gameHelpers
+│   │   │   ├── LandingPage.jsx     # Landing page with 1-tap demo access
+│   │   │   ├── DoctorReport.jsx    # 1-page printable clinical doctor report
+│   │   │   ├── PrivacyConsent.jsx  # Sharing toggles & role-based permissions
+│   │   │   ├── caregiver/
+│   │   │   │   └── CaregiverDashboard.jsx # Caregiver family oversight & WhatsApp feed
+│   │   │   └── patient/
+│   │   │       ├── SeniorDashboard.jsx    # Primary senior home screen
+│   │   │       ├── SeniorGlucoseLog.jsx   # Blood sugar trends & Recharts target band
+│   │   │       ├── SeniorMedications.jsx  # Medication adherence & missed dose simulation
+│   │   │       ├── SeniorSymptoms.jsx     # Symptom check-in
+│   │   │       ├── SeniorMeals.jsx        # Indian food & fasting guidance
+│   │   │       ├── SeniorActivity.jsx     # Walking & steps tracker
+│   │   │       ├── SeniorSummary.jsx      # Multilingual weekly summary
+│   │   │       └── SeniorOnboarding.jsx   # Senior-friendly onboarding wizard
+│   │   ├── services/
+│   │   │   └── api.js              # Frontend REST API client
+│   │   └── utils/
+│   │       ├── speechUtils.js      # SpeechRecognition & SpeechSynthesis utilities
+│   │       ├── offlineDb.js        # IndexedDB offline store & queue manager
+│   │       └── browserNotifications.js
 │   ├── index.html
-│   └── vite.config.js
-├── backend/
-│   ├── server.js                 # Express entry point + keep-alive pinger
-│   ├── routes/                   # patientRoutes, caregiverRoutes, gameRoutes
-│   ├── models/                   # Mongoose schemas (Patient, Caregiver, GameSession)
-│   ├── services/                 # mlService.js, translationService.js
-│   ├── jobs/                     # reminderCron.js (Node-Cron scheduler)
-│   └── middleware/               # JWT auth, rate limiting
-└── docs/
-    └── screenshots/              # UI gallery — all 18 screens
+│   ├── vite.config.js
+│   └── .env.example
+├── render.yaml                     # Render deployment blueprint
+├── vercel.json                     # Vercel deployment blueprint
+└── README.md
 ```
 
 ---
 
-## 8. Final Presentation
+## 🚀 Local Development Setup
 
-📊 The project presentation (PPT) is available on Google Drive (access: **Anyone with the link — Viewer**).
+### 1. Prerequisites
+- Node.js (v18 or higher)
+- MongoDB (Local community server or free MongoDB Atlas URI)
 
-> **[📥 View Presentation on Google Drive](https://docs.google.com/file/d/1ZMWVouCgjB8nl_J1NueILKSQ3ZTZmB5A/view)**
-
----
-
-## 9. Demo Video
-
-🎬 A full product walkthrough demo video is available on YouTube.
-
-> **[▶️ Watch Demo Video on YouTube](https://youtu.be/TTV7cAvSF-s)**
-
----
-
-## 10. Screenshots / Prototype Photos
-
-### 👴 Patient Portal
-
-| **Tactile PIN & Biometric Login** | **Horizon Dashboard** |
-|:---:|:---:|
-| ![Patient Login](docs/screenshots/01_patient_login.png) | ![Patient Dashboard](docs/screenshots/02_patient_dashboard.png) |
-| *4-digit PIN with audio feedback + WebAuthn FIDO2 biometrics* | *Time-aware greeting, state horizon banner, spotlight routine* |
-
-| **Chronological Routine Schedule** | **Family Reminiscence Memory Vault** |
-|:---:|:---:|
-| ![Patient Reminders](docs/screenshots/03_patient_reminders.png) | ![Memory Bank](docs/screenshots/10_patient_family_vault.png) |
-| *Morning-to-night care schedule with audio read-aloud & 1-tap checks* | *Photo reminiscence gallery for facial recall & kinship memory* |
-
-| **Patient Profile & Emergency Info** | **DPDP Act 2023 Privacy Policy** |
-|:---:|:---:|
-| ![Patient Profile](docs/screenshots/11_patient_profile.png) | ![Privacy Policy](docs/screenshots/18_privacy_policy.png) |
-| *Emergency dialers, blood group & regional language toggles* | *Full DPDP Act 2023 compliance — consent trails & rights* |
-
----
-
-### 🎮 Cognitive Games Suite
-
-| **Games Suite Hub** | **Market Day Basket (বজাৰৰ পাচি)** |
-|:---:|:---:|
-| ![Games Suite](docs/screenshots/04_patient_games_suite.png) | ![Market Day Basket](docs/screenshots/05_game_market_day_basket.png) |
-| *Central launcher with streak tracking & category tabs* | *Working memory recall of regional produce (Kaji Nemu, Bhut Jolokia)* |
-
-| **Daily Routine Sequencer (दैनिक दिनचर्या)** | **Faces & Family Recall (चेहरे और यादें)** |
-|:---:|:---:|
-| ![Routine Sequencer](docs/screenshots/06_game_daily_routine_sequencer.png) | ![Faces Recall](docs/screenshots/07_game_faces_family_recall.png) |
-| *Executive function — sequencing familiar morning-to-night routines* | *Fusiform gyrus stimulation — matching real family photos & kin* |
-
-| **Sound & Rhythm Match (ध्वनि और लय)** | **Odd One Out (अलग पहचानें)** |
-|:---:|:---:|
-| ![Sound Match](docs/screenshots/08_game_sound_rhythm_match.png) | ![Odd One Out](docs/screenshots/09_game_odd_one_out.png) |
-| *Auditory attention — indigenous instruments (Dhol, Pepa, Shankha)* | *Semantic categorization — identifying botanical anomalies* |
-
----
-
-### 🩺 Caregiver & Clinician Dashboard
-
-| **Caregiver Login** | **Command Center & Patient Roster** |
-|:---:|:---:|
-| ![Caregiver Login](docs/screenshots/12_caregiver_login.png) | ![Caregiver Dashboard](docs/screenshots/13_caregiver_dashboard.png) |
-| *Email/password, Google OAuth & WebAuthn clinician biometrics* | *Real-time patient roster with clinical status & adherence metrics* |
-
-| **Patient Clinical Dossier & Telemetry** | **Cognitive Games Telemetry** |
-|:---:|:---:|
-| ![Patient Detail](docs/screenshots/14_caregiver_patient_detail.png) | ![Game Telemetry](docs/screenshots/15_caregiver_cognitive_games.png) |
-| *AI Cognitive Health scoring, 7-day adherence charts* | *Round-by-round precision, reaction time & level history* |
-
-| **Red Flag Alerts & Action Center** | **Caregiver Settings & Profile** |
-|:---:|:---:|
-| ![Caregiver Notifications](docs/screenshots/16_caregiver_notifications.png) | ![Caregiver Profile](docs/screenshots/17_caregiver_profile.png) |
-| *Real-time alerts for missed critical medications + 1-tap dialer* | *Profile management, preferences & 30-day erasure controls* |
-
----
-
-## 11. Installation
-
+### 2. Backend Setup
 ```bash
-git clone https://github.com/gopalrajlohiya11-ui/Smriti.git
-cd Smriti
-
-# Backend
-cd backend && npm install
-
-# Frontend
-cd ../frontend && npm install
+cd backend
+npm install
+cp .env.example .env
 ```
-
-**`backend/.env`**
+Edit `backend/.env` with your settings:
 ```env
 PORT=5000
-NODE_ENV=development
-MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/Smriti
-JWT_SECRET=your_jwt_super_secret_key_here
-GEMINI_API_KEY=your_google_gemini_api_key
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
-WHATSAPP_TOKEN=your_meta_whatsapp_token
-WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
-WHATSAPP_VERIFY_TOKEN=your_verify_token
+MONGO_URI=mongodb://127.0.0.1:27017/diacare_senior
+JWT_SECRET=diacare_secret_key_2026
+FRONTEND_URL=http://localhost:5173
+
+# Optional: Real external APIs (Automatically falls back to MOCK mode if not set)
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+WHATSAPP_TOKEN=YOUR_WHATSAPP_TOKEN
+WHATSAPP_PHONE_NUMBER_ID=YOUR_PHONE_NUMBER_ID
 ```
 
-**`frontend/.env`**
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
-```
-
----
-
-## 12. Run
-
+Seed the synthetic test profiles:
 ```bash
-# Terminal 1 — Backend
-cd backend
-node seed.js   # First time only — seeds demo data
-npm start      # http://localhost:5000
-
-# Terminal 2 — Frontend
-cd frontend
-npm run dev    # http://localhost:5173
+npm run seed
 ```
 
-### ☁️ Live Deployments
+Start the backend server:
+```bash
+npm start
+```
+*Backend runs on `http://localhost:5000` (`GET /api/health` available).*
 
-| Service | URL |
-|---|---|
-| 🌐 **Live Web App** | [smriti-puce.vercel.app](https://smriti-puce.vercel.app) |
-| ⚙️ **Backend API** | [smriti-backend-nwrl.onrender.com](https://smriti-backend-nwrl.onrender.com/api/health) |
-| 🧠 **Live ML Engine** | [dementia-ai-engine.onrender.com](https://dementia-ai-engine.onrender.com/docs) |
-| 💻 **ML Engine Source** | [github.com/adityaraichauhan/Dementia-AI-engine](https://github.com/adityaraichauhan/Dementia-AI-engine) |
-| 📱 **WhatsApp Bot** | [wa.me/15556680031](https://wa.me/15556680031?text=Hi%20Smriti) |
-
----
-
-## 13. Future Scope
-
-| Phase | Milestone |
-|---|---|
-| 🏥 **Phase 1** | Government Tele-MANAS (14416) integration — automatic specialist referrals from remote NER districts |
-| 👩‍⚕️ **Phase 2** | ASHA & Frontline Worker Tablet Suite with voice prompts in Bodo, Khasi, Garo, Mizo, Meitei, Nagamese |
-| 🎙️ **Phase 3** | Acoustic Speech Biomarker Analysis via openSMILE — micro-cognitive decline detection from voice patterns |
-| ⌚ **Phase 4** | Wearable PPG & Vascular Risk Telemetry — Bluetooth smart band integration for continuous BP/HR monitoring |
-| 🎮 **Phase 5** | 6 additional cognitive games — Village Path Navigator, Spice Sorter, Proverb Completer, and more |
-| 🔬 **Phase 6** | Multi-centric ICMR & ARDSI clinical validation trials — 500+ NER patients over 12 months |
+### 3. Frontend Setup
+In a new terminal:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Frontend opens at `http://localhost:5173`.*
 
 ---
 
-## Team
+## 🎭 Synthetic Demo Profiles & Credentials
 
-<div align="center">
+For hackathon evaluation, 3 synthetic senior profiles are pre-seeded:
 
-**Team Design Divas** — Smart India Hackathon 2026 · SIH26003 · ITNS, NSUT New Delhi
+| Profile | Demographics | Language | Clinical Conditions | Demo Scenario |
+| :--- | :--- | :--- | :--- | :--- |
+| **Senior A: Ramesh Patel** | 68 Y, Male | **Hindi (हिन्दी)** | Type 2 Diabetes + Hypertension | Speaks *"Mera sugar 280 hai"*, gets high glucose evaluation & explainability, simulates missed medicine with WhatsApp escalation. |
+| **Senior B: Kamalabai Deshmukh** | 72 Y, Female | **Marathi (मराठी)** | Type 2 Diabetes (Insulin dependent) | Speaks *"माझी साखर ६५ आहे"*, triggers mild hypoglycemia protocol (carbs + 15m recheck). |
+| **Senior C: George Thomas** | 65 Y, Male | **English** | Mild T2D (Lifestyle & Oral) | Logs fasting sugar 115 mg/dL, gets in-target confirmation and 7-day adherence summary. |
 
-| # | Name |
-|:---:|:---|
-| 1 | **Gopal Raj Lohiya** |
-| 2 | **Aditya Rai Chauhan** |
-| 3 | **Mahir Kumar** |
-| 4 | **Hitarth Garg** |
-| 5 | **Mehak** |
-| 6 | **Diya Gautam** |
-
-</div>
+**Universal Demo PIN:** `1234`  
+**Caregiver Account:** `priya.caregiver@diacare.local` / `demo123`  
+**Doctor Account:** `dr.rao@apexhealth.in` / `demo123`
 
 ---
 
-<div align="center">
-  <b>🌸 Smriti (স্মৃতি / स्मृति) — Preserving Memories, Empowering Caregivers, Culturally Grounded.</b>
-</div>
+## 🧪 Live Demonstration Flow (Judging Guide)
+
+Follow this step-by-step walkthrough during live presentations:
+
+1. **Open Senior Mode (`/patient`):**
+   - Point out large cards, high-contrast typography, and senior touch targets.
+   - Toggle font size using the **A / A+ / A++** toolbar in the top navigation bar.
+2. **Demonstrate Voice-First Glucose Logging:**
+   - Tap **"Talk to App"** or **"Log Blood Sugar"**.
+   - Select Hindi. Speak (or type): *"Mera sugar 280 hai"*.
+   - System transcribes speech, highlights **280 mg/dL**, and prompts confirmation.
+   - Tap **Confirm & Save**.
+3. **Explainable Deterministic Safety Engine:**
+   - System evaluates the reading and flags it: *"Status: HIGH (Above configured target of 180 mg/dL)"*.
+   - Tap **"Why?"** to show the exact rule matched, threshold comparisons, and safe next step.
+4. **Medication Routine & Missed Dose Escalation:**
+   - Navigate to **Medicines** (`/patient/medicines`).
+   - Tap **"Simulate Missed Dose (Demo)"**.
+   - System advances from Stage 1 to Stage 2, marks dose as `MISSED`, and queues caregiver escalation.
+5. **Inspect Caregiver Portal (`/caregiver`):**
+   - Navigate to **Caregiver Portal**.
+   - Notice the live alert in the **WhatsApp Care Loop** stream and compliance metrics.
+   - Tap **"Simulate Caregiver WhatsApp Message"** to test live notification dispatch.
+6. **Generate 1-Page Doctor Report (`/doctor-report`):**
+   - View formatted summary with Time in Range %, mean glucose, and adherence table.
+   - Tap **"Download PDF / Print"** to trigger clean print-ready CSS.
+7. **Offline-First PWA Demonstration:**
+   - In browser DevTools, switch network to **Offline**.
+   - The top banner displays **Offline Mode**.
+   - Record a glucose reading — it saves instantly to the local IndexedDB queue.
+   - Switch network back to **Online** — the queue automatically synchronizes with MongoDB!
+
+---
+
+## 🔒 Safety, Privacy & Ethical Compliance
+
+- **No Autonomous Prescribing:** DiaCare Senior strictly organizes user-entered and clinician-prescribed data. It never prescribes, stops, or alters dosages.
+- **Explainable Rules:** Clinical risk assessments are deterministic and inspectable by physicians.
+- **Granular Consent:** Data is partitioned using role-based permissions; family caregivers only receive consented information.
+- **Attribution:** Built on standard open-source web infrastructure and refactored from an open-source architectural baseline, acknowledging original dependencies while introducing a completely original product identity, domain logic, and accessibility design system.

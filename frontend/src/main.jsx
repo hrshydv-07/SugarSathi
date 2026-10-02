@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator) {
   registerSW({
     immediate: true,
     onOfflineReady() {
-      console.log('🌸 Smriti Patient Portal is ready for offline operation');
+      console.log('✅ DiaCare Senior is ready for offline operation');
     }
   });
 }

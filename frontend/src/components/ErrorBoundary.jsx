@@ -21,24 +21,24 @@ export default class ErrorBoundary extends React.Component {
   };
 
   handleGoHome = () => {
-    window.location.href = '/';
+    window.location.href = '/patient';
   };
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-stone-200 shadow-xl space-y-5 text-center">
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-xl space-y-5 text-center">
             
-            <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-teal-100 text-teal-800 border border-teal-300 flex items-center justify-center mx-auto">
               <AlertCircle className="w-8 h-8" />
             </div>
 
             <div className="space-y-1.5">
-              <h2 className="text-2xl font-black text-stone-900">
+              <h2 className="text-2xl font-bold text-slate-900">
                 Something didn't load smoothly
               </h2>
-              <p className="text-xs sm:text-sm text-stone-500 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                 {this.state.error?.message || 'A temporary visual component encountered an issue.'}
               </p>
             </div>
@@ -47,7 +47,7 @@ export default class ErrorBoundary extends React.Component {
               <button
                 type="button"
                 onClick={this.handleReload}
-                className="flex-1 py-3 px-4 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
+                className="flex-1 py-3 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
               >
                 <RotateCcw className="w-4 h-4" />
                 <span>Reload Page</span>
@@ -56,10 +56,10 @@ export default class ErrorBoundary extends React.Component {
               <button
                 type="button"
                 onClick={this.handleGoHome}
-                className="flex-1 py-3 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer border border-stone-300"
+                className="flex-1 py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer border border-slate-300"
               >
                 <Home className="w-4 h-4" />
-                <span>Return Home</span>
+                <span>Return to Senior Mode</span>
               </button>
             </div>
 

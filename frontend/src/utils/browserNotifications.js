@@ -1,4 +1,4 @@
-// Browser Notification Utility for Smriti Scheduled Reminders
+// Browser Notification Utility for DiaCare Senior Scheduled Reminders
 
 export function isNotificationSupported() {
   return typeof window !== 'undefined' && 'Notification' in window;
@@ -26,23 +26,18 @@ export function sendBrowserNotification({ title, body, icon, tag }) {
   }
 
   try {
-    // High-contrast clean flower icon for Smriti notification
-    const defaultFlowerIcon = 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=192&auto=format&fit=crop&q=80';
-
     const notif = new Notification(title, {
       body,
-      icon: icon || defaultFlowerIcon,
+      icon: icon || '/favicon.svg',
       badge: '/favicon.svg',
-      tag: tag || `smriti-rem-${Date.now()}`,
+      tag: tag || `diacare-rem-${Date.now()}`,
       silent: false
     });
 
     notif.onclick = () => {
       try {
         window.focus();
-      } catch (e) {
-        // Safe focus fallback
-      }
+      } catch (e) {}
       notif.close();
     };
 

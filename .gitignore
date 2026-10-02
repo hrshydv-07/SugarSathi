@@ -8,9 +8,15 @@ dist/
 
 # Environment and secrets
 .env
+.env.*
+*.env
 backend/.env
+frontend/.env
 .env.local
 .env.*.local
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 
 # Logs
 *.log
