@@ -31,44 +31,45 @@ export default function PrivacyConsent() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link
           to="/patient"
-          className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+          className="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
+          title="Back to Dashboard"
         >
           <ChevronLeft size={20} />
         </Link>
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F2942] tracking-tight truncate">
             Privacy & Data Consent
           </h1>
-          <p className="text-slate-500 text-sm font-medium">
+          <p className="text-slate-500 text-xs sm:text-sm font-medium">
             You are always in control of who sees your health information.
           </p>
         </div>
       </div>
 
       {savedNotice && (
-        <div className="bg-emerald-50 border border-emerald-300 text-emerald-900 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2">
-          <Check size={18} className="text-emerald-600" />
+        <div className="bg-emerald-50 border border-emerald-300 text-emerald-950 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2">
+          <Check size={18} className="text-emerald-600 shrink-0" />
           <span>Consent preferences updated successfully!</span>
         </div>
       )}
 
       {/* Sharing Permissions Section */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
-        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+      <section className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-200/90 space-y-6">
+        <h2 className="text-xl font-bold text-[#0F2942] flex items-center gap-2">
           <ShieldCheck size={22} className="text-teal-600" />
           <span>Healthcare Sharing Controls</span>
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {/* Toggle 1: Caregiver Sharing */}
           <div className="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
-            <div>
-              <div className="font-bold text-slate-900 text-base">
+            <div className="min-w-0">
+              <div className="font-bold text-slate-900 text-sm sm:text-base truncate">
                 Share Data with Family Caregiver
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -76,12 +77,14 @@ export default function PrivacyConsent() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => setCaregiverSharing(!caregiverSharing)}
-              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center ${
+              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center shrink-0 ${
                 caregiverSharing ? 'bg-teal-600 justify-end' : 'bg-slate-300 justify-start'
               }`}
               role="switch"
               aria-checked={caregiverSharing}
+              aria-label="Toggle caregiver sharing"
             >
               <div className="w-6 h-6 rounded-full bg-white shadow-md" />
             </button>
@@ -89,8 +92,8 @@ export default function PrivacyConsent() {
 
           {/* Toggle 2: Doctor Report Sharing */}
           <div className="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
-            <div>
-              <div className="font-bold text-slate-900 text-base">
+            <div className="min-w-0">
+              <div className="font-bold text-slate-900 text-sm sm:text-base truncate">
                 Share Report with Clinician / Doctor
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -98,12 +101,14 @@ export default function PrivacyConsent() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => setDoctorSharing(!doctorSharing)}
-              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center ${
+              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center shrink-0 ${
                 doctorSharing ? 'bg-teal-600 justify-end' : 'bg-slate-300 justify-start'
               }`}
               role="switch"
               aria-checked={doctorSharing}
+              aria-label="Toggle doctor report sharing"
             >
               <div className="w-6 h-6 rounded-full bg-white shadow-md" />
             </button>
@@ -111,8 +116,8 @@ export default function PrivacyConsent() {
 
           {/* Toggle 3: WhatsApp Care Alerts */}
           <div className="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
-            <div>
-              <div className="font-bold text-slate-900 text-base">
+            <div className="min-w-0">
+              <div className="font-bold text-slate-900 text-sm sm:text-base truncate">
                 WhatsApp Urgent & Missed Dose Alerts
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -120,12 +125,14 @@ export default function PrivacyConsent() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => setWhatsappAlerts(!whatsappAlerts)}
-              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center ${
+              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center shrink-0 ${
                 whatsappAlerts ? 'bg-teal-600 justify-end' : 'bg-slate-300 justify-start'
               }`}
               role="switch"
               aria-checked={whatsappAlerts}
+              aria-label="Toggle WhatsApp care alerts"
             >
               <div className="w-6 h-6 rounded-full bg-white shadow-md" />
             </button>
@@ -133,8 +140,8 @@ export default function PrivacyConsent() {
 
           {/* Toggle 4: Voice Processing */}
           <div className="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
-            <div>
-              <div className="font-bold text-slate-900 text-base">
+            <div className="min-w-0">
+              <div className="font-bold text-slate-900 text-sm sm:text-base truncate">
                 Voice Input & Speech Recognition
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -142,12 +149,14 @@ export default function PrivacyConsent() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => setVoiceConsent(!voiceConsent)}
-              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center ${
+              className={`w-14 h-8 rounded-full transition-colors p-1 cursor-pointer flex items-center shrink-0 ${
                 voiceConsent ? 'bg-teal-600 justify-end' : 'bg-slate-300 justify-start'
               }`}
               role="switch"
               aria-checked={voiceConsent}
+              aria-label="Toggle voice processing"
             >
               <div className="w-6 h-6 rounded-full bg-white shadow-md" />
             </button>
@@ -155,16 +164,17 @@ export default function PrivacyConsent() {
         </div>
 
         <button
+          type="button"
           onClick={handleSave}
-          className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-base touch-target-senior cursor-pointer shadow-md"
+          className="w-full bg-[#0F2942] hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-base touch-target-senior cursor-pointer shadow-md transition-colors"
         >
           Save Consent Settings
         </button>
       </section>
 
       {/* Role-Based Data Separation Explanation */}
-      <section className="bg-slate-50 rounded-3xl p-6 sm:p-7 border border-slate-200 space-y-3">
-        <h3 className="font-bold text-slate-900 text-base flex items-center gap-1.5">
+      <section className="bg-slate-50 rounded-3xl p-5 sm:p-7 border border-slate-200 space-y-2.5">
+        <h3 className="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-1.5">
           <Lock size={18} className="text-teal-700" />
           <span>Role-Based Access Protections</span>
         </h3>
@@ -185,8 +195,9 @@ export default function PrivacyConsent() {
           <span className="text-rose-700">Under privacy regulations, you can request an export or complete removal of your records.</span>
         </div>
         <button
+          type="button"
           onClick={() => alert('Data deletion request received. In production, this queues a soft-delete after 30-day confirmation.')}
-          className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl cursor-pointer shrink-0"
+          className="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl cursor-pointer shrink-0 transition-colors"
         >
           Request Data Deletion
         </button>

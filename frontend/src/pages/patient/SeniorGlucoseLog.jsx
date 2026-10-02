@@ -68,30 +68,31 @@ export default function SeniorGlucoseLog() {
   }));
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-6">
       {/* Header with Back Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <Link
             to="/patient"
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+            className="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
             title="Back to Dashboard"
           >
             <ChevronLeft size={22} />
           </Link>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F2942] tracking-tight truncate">
               Blood Sugar Log & Trends
             </h1>
-            <p className="text-slate-500 text-sm font-medium">
-              Target Range: <strong>80–180 mg/dL</strong> (Safe geriatric range)
+            <p className="text-slate-500 text-xs sm:text-sm font-medium">
+              Target Range: <strong>80–180 mg/dL</strong> (Clinician-approved geriatric target)
             </p>
           </div>
         </div>
 
         <button
+          type="button"
           onClick={() => setVoiceModalOpen(true)}
-          className="bg-teal-600 hover:bg-teal-700 text-white font-bold px-5 py-3 rounded-2xl flex items-center justify-center gap-2 text-base touch-target-senior cursor-pointer shadow-md"
+          className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-base touch-target-senior cursor-pointer shadow-md transition-all shrink-0"
         >
           <Mic size={20} />
           <span>Log New Reading</span>
@@ -100,61 +101,63 @@ export default function SeniorGlucoseLog() {
 
       {/* 7-DAY & 30-DAY METRIC SUMMARY TILES */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Average Sugar</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
-            {trends?.average || '--'} <span className="text-sm font-medium text-slate-500">mg/dL</span>
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs min-w-0">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block truncate">Average Sugar</span>
+          <div className="text-2xl sm:text-4xl font-extrabold text-[#0F2942] mt-1 truncate">
+            {trends?.average || '--'} <span className="text-xs sm:text-sm font-medium text-slate-500">mg/dL</span>
           </div>
-          <span className="text-xs text-slate-500 font-medium">Over {timeRange} days</span>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block mt-0.5">Past {timeRange} days</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-bold text-emerald-700 uppercase">Time In Range (TIR)</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-emerald-800 mt-1">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs min-w-0">
+          <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider block truncate">Time In Range</span>
+          <div className="text-2xl sm:text-4xl font-extrabold text-emerald-800 mt-1 truncate">
             {trends?.timeInRangePercent ?? '--'}%
           </div>
-          <span className="text-xs text-slate-500 font-medium">Target 70–180 mg/dL</span>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block mt-0.5">Target 80–180</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Fasting Average</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
-            {trends?.fastingAverage || '--'} <span className="text-sm font-medium text-slate-500">mg/dL</span>
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs min-w-0">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block truncate">Fasting Mean</span>
+          <div className="text-2xl sm:text-4xl font-extrabold text-[#0F2942] mt-1 truncate">
+            {trends?.fastingAverage || '--'} <span className="text-xs sm:text-sm font-medium text-slate-500">mg/dL</span>
           </div>
-          <span className="text-xs text-slate-500 font-medium">Morning readings</span>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block mt-0.5">Morning fasting</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">After Meal Average</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
-            {trends?.postMealAverage || '--'} <span className="text-sm font-medium text-slate-500">mg/dL</span>
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs min-w-0">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block truncate">Post-Meal Mean</span>
+          <div className="text-2xl sm:text-4xl font-extrabold text-[#0F2942] mt-1 truncate">
+            {trends?.postMealAverage || '--'} <span className="text-xs sm:text-sm font-medium text-slate-500">mg/dL</span>
           </div>
-          <span className="text-xs text-slate-500 font-medium">Post-prandial</span>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block mt-0.5">After meal</span>
         </div>
       </div>
 
       {/* TREND CHART (Senior-Friendly, High Contrast, Target Band) */}
-      <section className="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+      <section className="bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-slate-200">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">
+            <h2 className="text-xl font-bold text-[#0F2942]">
               {timeRange}-Day Blood Sugar Trend
             </h2>
-            <p className="text-slate-500 text-xs mt-0.5">
+            <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
               The green shaded band indicates your clinician-approved target zone (80–180 mg/dL).
             </p>
           </div>
 
-          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shrink-0">
             <button
+              type="button"
               onClick={() => setTimeRange('7')}
-              className={`px-3 py-1.5 rounded-lg cursor-pointer ${timeRange === '7' ? 'bg-white text-teal-800 shadow-xs' : 'text-slate-600'}`}
+              className={`px-3 py-1.5 rounded-lg cursor-pointer transition-colors ${timeRange === '7' ? 'bg-white text-teal-800 shadow-xs font-extrabold' : 'text-slate-600'}`}
             >
               Past 7 Days
             </button>
             <button
+              type="button"
               onClick={() => setTimeRange('30')}
-              className={`px-3 py-1.5 rounded-lg cursor-pointer ${timeRange === '30' ? 'bg-white text-teal-800 shadow-xs' : 'text-slate-600'}`}
+              className={`px-3 py-1.5 rounded-lg cursor-pointer transition-colors ${timeRange === '30' ? 'bg-white text-teal-800 shadow-xs font-extrabold' : 'text-slate-600'}`}
             >
               Past 30 Days
             </button>
@@ -164,8 +167,8 @@ export default function SeniorGlucoseLog() {
         {chartData.length > 0 ? (
           <div className="h-72 sm:h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+              <LineChart data={chartData} margin={{ top: 10, right: 10, left: -22, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
                 <XAxis dataKey="time" tick={{ fontSize: 11, fill: '#64748B' }} />
                 <YAxis domain={[40, 320]} tick={{ fontSize: 11, fill: '#64748B' }} />
                 <Tooltip
@@ -190,8 +193,8 @@ export default function SeniorGlucoseLog() {
                   dataKey="value"
                   stroke="#0D9488"
                   strokeWidth={3}
-                  dot={{ r: 5, fill: '#0D9488', strokeWidth: 2, stroke: '#FFFFFF' }}
-                  activeDot={{ r: 8, fill: '#0F2942' }}
+                  dot={{ r: 4.5, fill: '#0D9488', strokeWidth: 2, stroke: '#FFFFFF' }}
+                  activeDot={{ r: 7, fill: '#0F2942' }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -204,8 +207,8 @@ export default function SeniorGlucoseLog() {
       </section>
 
       {/* READING HISTORY LIST */}
-      <section className="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200">
-        <h2 className="text-xl font-bold text-slate-900 mb-4">
+      <section className="bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-slate-200">
+        <h2 className="text-xl font-bold text-[#0F2942] mb-4">
           Recorded Readings History
         </h2>
 
@@ -216,22 +219,22 @@ export default function SeniorGlucoseLog() {
             const level = r.riskAssessment?.level || (isHigh ? 'ATTENTION' : isLow ? 'ATTENTION' : 'NORMAL');
 
             return (
-              <div key={r._id} className="py-4 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-4">
-                  <div className="text-3xl sm:text-4xl font-black text-slate-900">
+              <div key={r._id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="text-2xl sm:text-4xl font-black text-[#0F2942] shrink-0">
                     {r.value} <span className="text-xs font-semibold text-slate-500">mg/dL</span>
                   </div>
-                  <div>
-                    <div className="text-sm sm:text-base font-bold text-slate-800 capitalize">
+                  <div className="min-w-0">
+                    <div className="text-sm sm:text-base font-bold text-slate-800 capitalize truncate">
                       {r.mealContext?.replace('_', ' ')}
                     </div>
-                    <div className="text-xs text-slate-500">
+                    <div className="text-xs text-slate-500 truncate">
                       {new Date(r.timestamp).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })} at {new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
                   <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                     level === 'NORMAL' ? 'bg-emerald-100 text-emerald-800' : level === 'URGENT' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'
                   }`}>
@@ -239,6 +242,7 @@ export default function SeniorGlucoseLog() {
                   </span>
 
                   <button
+                    type="button"
                     onClick={() => {
                       setActiveExplanation({
                         value: r.value,
@@ -248,7 +252,7 @@ export default function SeniorGlucoseLog() {
                         nextStep: r.riskAssessment?.suggestedAction || 'Follow your regular daily diabetes plan.'
                       });
                     }}
-                    className="p-2 text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 rounded-xl cursor-pointer"
+                    className="p-2 text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 rounded-xl cursor-pointer transition-colors"
                     title="Why was this flagged?"
                   >
                     <HelpCircle size={18} />

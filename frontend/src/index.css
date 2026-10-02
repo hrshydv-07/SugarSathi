@@ -2,38 +2,38 @@
 
 @layer base {
   :root {
-    /* Healthcare Design Tokens - DiaCare Senior */
+    /* Healthcare Design Tokens - DiaCare Senior (Human-Centric Medical Palette) */
     --diacare-bg: #F8FAFC;
     --diacare-surface: #FFFFFF;
     --diacare-primary: #0F2942;
     --diacare-primary-hover: #1E3A8A;
     --diacare-secondary: #0D9488;
-    --diacare-secondary-hover: #14B8A6;
+    --diacare-secondary-hover: #0F766E;
     --diacare-text: #0F172A;
     --diacare-text-muted: #475569;
-    --diacare-border: #E2E8F0;
+    --diacare-border: rgba(226, 232, 240, 0.85);
     --diacare-success: #059669;
     --diacare-success-bg: #ECFDF5;
     --diacare-warning: #D97706;
     --diacare-warning-bg: #FFFBEB;
-    --diacare-danger: #DC2626;
-    --diacare-danger-bg: #FEF2F2;
-    --diacare-focus: #2563EB;
+    --diacare-danger: #E11D48;
+    --diacare-danger-bg: #FFF1F2;
+    --diacare-focus: #0D9488;
 
     /* Senior-first typography base scale */
-    --base-font-size: 18px;
+    --base-font-size: 17px;
     --senior-btn-height: 56px;
   }
 
-  /* Font size preference modifiers */
+  /* Font size preference modifiers (Persistent Senior Accessibility) */
   html.font-normal {
-    --base-font-size: 18px;
+    --base-font-size: 17px;
   }
   html.font-large {
-    --base-font-size: 21px;
+    --base-font-size: 19px;
   }
   html.font-xlarge {
-    --base-font-size: 24px;
+    --base-font-size: 22px;
   }
 
   body {
@@ -46,6 +46,8 @@
     padding: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   #root {
@@ -55,28 +57,99 @@
     width: 100%;
   }
 
-  /* Accessible focus indicators for keyboard & accessibility */
+  /* Accessible focus indicators for keyboard & assistive tools */
   *:focus-visible {
     outline: 3px solid var(--diacare-focus);
     outline-offset: 2px;
   }
+
+  /* Prevent text selection quirks on buttons */
+  button {
+    user-select: none;
+    touch-action: manipulation;
+  }
 }
 
-/* Senior Touch Targets */
+/* Senior Touch Targets: 56px minimum standard */
 .touch-target-senior {
   min-height: 56px;
   min-width: 56px;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .touch-target-senior:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+}
+
+/* Premium Medical Card Surfaces */
+.diacare-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.diacare-card:hover {
+  border-color: rgba(203, 213, 225, 0.95);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* Tactile Keypad Button */
+.keypad-btn {
+  min-height: 58px;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-color: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+.keypad-btn:active {
+  background-color: #E2E8F0;
+  transform: scale(0.95);
+}
+
+/* Subtle gentle animations */
+@keyframes pulse-ring {
+  0% { transform: scale(0.96); opacity: 0.85; }
+  50% { transform: scale(1.04); opacity: 0.45; }
+  100% { transform: scale(0.96); opacity: 0.85; }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.2s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Clean Custom Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Print Styles for 1-Page Doctor Report */
@@ -84,7 +157,7 @@
   body {
     background: #FFFFFF !important;
     color: #000000 !important;
-    font-size: 12pt !important;
+    font-size: 11pt !important;
   }
 
   header, nav, footer, .no-print, button, .install-banner {
@@ -102,24 +175,4 @@
     box-shadow: none !important;
     border: none !important;
   }
-}
-
-/* Subtle animations */
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.05); opacity: 0.4; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-.animate-pulse-ring {
-  animation: pulse-ring 2s infinite ease-in-out;
-}
-
-/* Custom scrollbar */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
